@@ -96,8 +96,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     String token = UUID.randomUUID().toString(true);
     //user转userDTO转map
     UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
-    Map<String, Object> userMap = BeanUtil.beanToMap(userDTO, new HashMap<>(),
-        CopyOptions.create().setIgnoreNullValue(true).setFieldValueEditor((fieldName, fieldValue) ->
+    Map<String, Object> userMap = BeanUtil.beanToMap(
+        userDTO,
+        new HashMap<>(),
+        CopyOptions.create()
+            .setIgnoreNullValue(true)
+            .setFieldValueEditor((fieldName, fieldValue) ->
             fieldValue.toString()));
     //存入redis
     String tokenKey = LOGIN_USER_KEY + token;
