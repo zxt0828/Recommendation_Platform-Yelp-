@@ -160,12 +160,14 @@ public class CacheClient {
     return r;
   }
 
+  //获取锁
   private boolean tryLock(String key) {
     Boolean flag = stringRedisTemplate.opsForValue()
         .setIfAbsent(key, "1", 10, TimeUnit.SECONDS);
     return BooleanUtil.isTrue(flag);
   }
 
+  //释放锁
   private void unlock(String key) {
     stringRedisTemplate.delete(key);
   }
