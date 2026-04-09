@@ -1,5 +1,6 @@
 local voucherId = ARGV[1];
 local userId = ARGV[2];
+local id = ARGV[3];
 
 local stockKey = "seckill: stock" .. voucherId;
 local orderKey = "seckill: order" .. voucherId;
@@ -19,5 +20,7 @@ end
 redis.call('incrby', stockKey, -1)
 -- 3.6 下单（保存用户）（sadd orderKey userId）
 redis.call('sadd', orderKey, userId)
+-- 发送消息到队列stream
+redis.call('xadd','stream.orders', '*', 'UserId', userId, 'VoucherId', voucherId, 'id', id);
 return 0
 
